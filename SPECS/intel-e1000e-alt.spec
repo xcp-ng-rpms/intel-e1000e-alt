@@ -9,7 +9,7 @@
 Summary: %{vendor_name} %{driver_name} device drivers
 Name: %{vendor_label}-%{driver_name}-alt
 Version: 3.6.0
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 
 # Source taken from https://downloadcenter.intel.com/download/15817
@@ -53,5 +53,8 @@ find %{buildroot}/lib/modules/%{kernel_version} -name "*.ko" -type f | xargs chm
 /lib/modules/%{kernel_version}/*/*.ko
 
 %changelog
+* Wed Aug 19 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.6.0-2
+- Rebuild for XCP-ng 8.2
+
 * Thu Apr 16 2020 Rushikesh Jadhav <rushikesh7@gmail.com> - 3.6.0-1
 - Adding Intel driver e1000e
