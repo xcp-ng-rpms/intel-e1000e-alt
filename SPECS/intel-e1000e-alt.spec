@@ -9,7 +9,7 @@
 Summary: %{vendor_name} %{driver_name} device drivers
 Name: %{vendor_label}-%{driver_name}-alt
 Version: 3.6.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 
 # Source taken from https://downloadcenter.intel.com/download/15817
@@ -53,6 +53,9 @@ find %{buildroot}/lib/modules/%{kernel_version} -name "*.ko" -type f | xargs chm
 /lib/modules/%{kernel_version}/*/*.ko
 
 %changelog
+* Fri Sep 16 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.6.0-3
+- Rebuild for XCP-ng 8.3
+
 * Wed Aug 19 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.6.0-2
 - Rebuild for XCP-ng 8.2
 
