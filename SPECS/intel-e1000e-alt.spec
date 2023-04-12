@@ -8,12 +8,12 @@
 
 Summary: %{vendor_name} %{driver_name} device drivers
 Name: %{vendor_label}-%{driver_name}-alt
-Version: 3.6.0
-Release: 2%{?dist}
+Version: 3.8.7
+Release: 1%{?dist}
 License: GPL
 
-# Source taken from https://downloadcenter.intel.com/download/15817
-Source0: %{driver_name}-%{version}.tar.gz
+# Source taken from XS 8.3
+Source0: %{vendor_label}-%{driver_name}-%{version}.tar.gz
 
 BuildRequires: gcc
 BuildRequires: kernel-devel
@@ -27,7 +27,7 @@ Requires(postun): /usr/sbin/depmod
 version %{kernel_version}.
 
 %prep
-%autosetup -p1 -n %{driver_name}-%{version}
+%autosetup -p1 -n %{vendor_label}-%{driver_name}-%{version}
 
 %build
 %{?cov_wrap} %{make_build} -C /lib/modules/%{kernel_version}/build M=$(pwd)/src KSRC=/lib/modules/%{kernel_version}/build modules
@@ -53,6 +53,9 @@ find %{buildroot}/lib/modules/%{kernel_version} -name "*.ko" -type f | xargs chm
 /lib/modules/%{kernel_version}/*/*.ko
 
 %changelog
+* Wed Apr 12 2023 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.8.7-1
+- Update to 3.8.7
+
 * Wed Aug 19 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.6.0-2
 - Rebuild for XCP-ng 8.2
 
