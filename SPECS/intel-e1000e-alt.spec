@@ -15,6 +15,8 @@ License: GPL
 # Source taken from XS 8.3
 Source0: %{vendor_label}-%{driver_name}-%{version}.tar.gz
 
+Patch1: 0001-Support-kernels-after-4.19.201.patch
+
 BuildRequires: gcc
 BuildRequires: kernel-devel
 Provides: vendor-driver
