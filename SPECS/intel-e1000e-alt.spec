@@ -15,6 +15,8 @@ License: GPL
 # Source taken from XS 8.3
 Source0: %{vendor_label}-%{driver_name}-%{version}.tar.gz
 
+Patch1: compat-support-kernel-4.19.201-skb_frag_off.patch
+
 BuildRequires: gcc
 BuildRequires: kernel-devel
 Provides: vendor-driver
