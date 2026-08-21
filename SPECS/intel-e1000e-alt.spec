@@ -9,7 +9,10 @@
 Summary: %{vendor_name} %{driver_name} device drivers
 Name: %{vendor_label}-%{driver_name}-alt
 Version: 3.8.7
-Release: 1%{?dist}
+Release: 2%{?dist}
+# Built against new kABI after cip rebase
+Requires: xcpng-kernel-kabi = 4.19.325-cip134+
+
 License: GPL
 
 # Source taken from XS 8.3
@@ -55,6 +58,9 @@ find %{buildroot}/lib/modules/%{kernel_version} -name "*.ko" -type f | xargs chm
 /lib/modules/%{kernel_version}/*/*.ko
 
 %changelog
+* Mon Aug 31 2026 Quentin Casasnovas <quentin.casasnovas@vates.tech> - 3.8.7-2
+- Rebuild for kernel v4.19.325-cip134
+
 * Wed Apr 12 2023 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.8.7-1
 - Update to 3.8.7
 
