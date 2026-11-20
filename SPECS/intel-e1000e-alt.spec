@@ -9,14 +9,16 @@
 Summary: %{vendor_name} %{driver_name} device drivers
 Name: %{vendor_label}-%{driver_name}-alt
 Version: 3.8.7
-Release: 1%{?dist}
+Release: 1.0.kernelpreview.1%{?dist}
 License: GPL
 
 # Source taken from XS 8.3
 Source0: %{vendor_label}-%{driver_name}-%{version}.tar.gz
 
+Patch1: compat-support-kernel-4.19.201-skb_frag_off.patch
+
 BuildRequires: gcc
-BuildRequires: kernel-devel
+BuildRequires: kernel-devel >= 4.19.325-cip137.8.0.46.16
 Provides: vendor-driver
 Requires: kernel-uname-r = %{kernel_version}
 Requires(post): /usr/sbin/depmod
@@ -53,6 +55,9 @@ find %{buildroot}/lib/modules/%{kernel_version} -name "*.ko" -type f | xargs chm
 /lib/modules/%{kernel_version}/*/*.ko
 
 %changelog
+* Mon Nov 16 2026 Quentin Casasnovas <quentin.casasnovas@vates.tech> - 3.8.7-1.0.kernelpreview.1
+- Rebuild for kernel v4.19.325-cip137
+
 * Wed Apr 12 2023 Samuel Verschelde <stormi-xcp@ylix.fr> - 3.8.7-1
 - Update to 3.8.7
 

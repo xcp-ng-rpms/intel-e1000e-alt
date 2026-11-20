@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Quentin Casasnovas <quentin.casasnovas@vates.tech>
+Date: Tue, 18 Aug 2026 09:34:48 +0200
+Subject: [PATCH] compat: support kernel >= 4.19.201 (skb_frag_off).
+
+d94d95ae0dd0 ("gro: ensure frag0 meets IP header alignment") in v4.19.201
+added the definition for skb_frag_off in a linux header, so no need to
+redefine it.  Our XS-derived kernels always report a zero SUBLEVEL, so
+they keep using the compat definition, while the CIP-based kernels expose
+their stable version in LINUX_VERSION_CODE.
+
+This fixes a build error when using v4.19.325-cip134 headers to build this
+driver:
+
+  In file included from /home/builder/rpmbuild/BUILD/intel-e1000e-3.8.7/src/e1000.h:14:0,
+		   from /home/builder/rpmbuild/BUILD/intel-e1000e-3.8.7/src/param.c:8:
+  /home/builder/rpmbuild/BUILD/intel-e1000e-3.8.7/src/kcompat.h:7138:28: error: redefinition of 'skb_frag_off'
+   static inline unsigned int skb_frag_off(const skb_frag_t * frag)
+			      ^
+  In file included from ./include/linux/if_ether.h:23:0,
+		   from ./include/uapi/linux/ethtool.h:19,
+		   from ./include/linux/ethtool.h:18,
+		   from ./include/linux/netdevice.h:41,
+		   from /home/builder/rpmbuild/BUILD/intel-e1000e-3.8.7/src/param.c:4:
+  ./include/linux/skbuff.h:2818:28: note: previous definition of 'skb_frag_off' was here
+   static inline unsigned int skb_frag_off(const skb_frag_t *frag)
+
+Signed-off-by: Quentin Casasnovas <quentin.casasnovas@vates.tech>
+---
+ src/kcompat.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/kcompat.h b/src/kcompat.h
+index c1edfde731fb..532f2029a0fc 100644
+--- a/src/kcompat.h
++++ b/src/kcompat.h
+@@ -7135,10 +7135,14 @@ devlink_flash_update_status_notify(struct devlink __always_unused *devlink,
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(5,4,0))
+ #if (!(RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(8,2)) && \
+      !(SLE_VERSION_CODE >= SLE_VERSION(15,2,0)))
++/* skb_frag_off() was backported to v4.19.201. */
++#if !(LINUX_VERSION_CODE >= KERNEL_VERSION(4,19,201) && \
++      LINUX_VERSION_CODE < KERNEL_VERSION(4,20,0))
+ static inline unsigned int skb_frag_off(const skb_frag_t * frag)
+ {
+ 	return frag->page_offset;
+ }
++#endif
+ 
+ static inline void skb_frag_off_add(skb_frag_t * frag, int delta)
+ {
